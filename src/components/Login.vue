@@ -4,13 +4,28 @@
       <div class="avatar_box">
         <img src="../assets/logo.png" alt="" />
       </div>
-      <h1>后台系统</h1>
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="用户名">
-          <el-input v-model="form.username"></el-input>
+      <el-form
+        class="login_form"
+        ref="loginFormRef"
+        :model="loginForm"
+        :rules="loginFormRules"
+      >
+        <el-form-item label="用户名" prop="username">
+          <el-input
+            prefix-icon="el-icon-user-solid"
+            v-model="loginForm.username"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="用户名">
-          <el-input type="password" v-model="form.passaword"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input
+            type="password"
+            prefix-icon="el-icon-lock"
+            v-model="loginForm.password"
+          ></el-input>
+        </el-form-item>
+        <el-form-item class="btns">
+          <el-button type="primary" @click="login">登录</el-button>
+          <el-button type="info" @click="resetLoginForm">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -18,22 +33,63 @@
 </template>
 
 <script>
-import Form from "element-ui";
 export default {
   data() {
     return {
-      form: {
-        username: "",
-        password: "",
+      // 登录表单的数据对象
+      loginForm: {
+        username: 'admin',
+        password: '123456',
       },
-    };
+      // 表单验证规则
+      loginFormRules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          {
+            min: 4,
+            max: 18,
+            message: '长度在 4 到 18 个字符',
+            trigger: 'blur',
+          },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          {
+            min: 2,
+            max: 16,
+            message: '长度在 2 到 16 个字符',
+            trigger: 'blur',
+          },
+        ],
+      },
+    }
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    login() {
+      this.$refs.loginFormRef.validate(async (valid) => {
+        if (!valid) return
+        // 直接用花括号解构赋值出得到的data
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        console.log(res)
+        if (res.meta.status !== 200) {
+          return this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
+        } else {
+          this.$message.success('登录成功')
+          // 1. 将token储存到seesionStorage
+          sessionStorage.setItem('token', res.data.token)
+
+          // 2. 路由跳转到/home
+          setTimeout(() => {
+            this.$router.push('/home')
+          }, 1500)
+        }
+      })
+    },
+    resetLoginForm() {
+      this.$refs.loginFormRef.resetFields()
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -44,13 +100,15 @@ export default {
   background-color: rgb(28, 70, 139);
 }
 
+//   整一下Less语法嵌套！
 .login_box {
+  position: absolute;
   width: 450px;
   height: 300px;
+  padding: 20px;
   background-color: #fff;
   border-radius: 5px;
 
-  //   整一下Less语法嵌套！
   .avatar_box {
     padding: 10px;
     width: 100px;
@@ -68,5 +126,18 @@ export default {
       border-radius: 50%;
     }
   }
+}
+.login_form {
+  position: absolute;
+  padding: 0 30px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btns {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
