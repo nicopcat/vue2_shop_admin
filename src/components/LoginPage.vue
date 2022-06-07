@@ -2,7 +2,7 @@
   <div class="login_container">
     <div class="login_box">
       <div class="avatar_box">
-        <img src="../assets/logo.png" alt="" />
+        <img src="../assets/logo.gif" alt="" />
       </div>
       <el-form
         class="login_form"
@@ -39,7 +39,7 @@ export default {
       // 登录表单的数据对象
       loginForm: {
         username: 'admin',
-        password: '123456',
+        password: '123456'
       },
       // 表单验证规则
       loginFormRules: {
@@ -49,8 +49,8 @@ export default {
             min: 4,
             max: 18,
             message: '长度在 4 到 18 个字符',
-            trigger: 'blur',
-          },
+            trigger: 'blur'
+          }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -58,10 +58,10 @@ export default {
             min: 2,
             max: 16,
             message: '长度在 2 到 16 个字符',
-            trigger: 'blur',
-          },
-        ],
-      },
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -87,8 +87,8 @@ export default {
     },
     resetLoginForm() {
       this.$refs.loginFormRef.resetFields()
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -97,7 +97,7 @@ export default {
   height: 100%;
   display: grid;
   place-items: center;
-  background-color: rgb(28, 70, 139);
+  background-color: rgba(12, 39, 82, 0.91);
 }
 
 //   整一下Less语法嵌套！
@@ -107,7 +107,8 @@ export default {
   height: 300px;
   padding: 20px;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
+  border: 1px solid rgb(49, 78, 190);
 
   .avatar_box {
     padding: 10px;
