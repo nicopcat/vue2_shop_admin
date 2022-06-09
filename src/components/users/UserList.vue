@@ -22,7 +22,7 @@
             class="user_manage_btn"
             type="primary"
             @click="dialogVisible = true"
-            >操作按钮</el-button
+            >添加用户</el-button
           >
         </el-col>
       </el-row>
@@ -89,6 +89,7 @@
             >
             </el-pagination>
             <el-dialog
+              @close="addDialogClose"
               title="添加用户"
               :visible.sync="dialogVisible"
               width="30%"
@@ -101,7 +102,7 @@
                 label-width="70px"
               >
                 <el-form-item label="用户名" prop="username">
-                  <el-input v-model="addForm.name"></el-input>
+                  <el-input v-model="addForm.username"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                   <el-input
@@ -118,9 +119,7 @@
               </el-form>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button
-                  type="primary"
-                  @click="addUser, (dialogVisible = false)"
+                <el-button type="primary" @click="addUser" :disabled="isValid"
                   >确 定</el-button
                 >
               </span>
@@ -165,6 +164,7 @@ export default {
     }
 
     return {
+      isValid: false,
       addForm: {
         username: '',
         password: '',
@@ -210,25 +210,27 @@ export default {
     }
   },
   methods: {
+    addDialogClose() {
+      this.$refs.addFormRef.resetFields()
+    },
     addUser() {
-      this.$refs.addForm.validate(async (valid) => {
-        if (valid) {
-          this.$message.success('提交成功')
-          const res = await this.$http.post('users', {
-            username: this.addForm.username,
-            passwword: this.addForm.password,
-            email: this.addForm.email,
-            mobile: this.addForm.mobile
-          })
-          console.log(res)
-        } else {
+      this.$refs.addFormRef.validate(async (valid) => {
+        if (!valid) {
           this.$message.error('信息错误，提交失败')
           return false
+        }
+        this.isValid = true
+        const res = await this.$http.post('users', this.addForm)
+        console.log(res)
+        if (res.status !== 200) {
+          return this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
+        } else {
+          this.$message.success('提交成功')
         }
       })
     },
     resetForm() {
-      this.$refs.addForm.resetFields()
+      this.$refs.addFormRef.resetFields()
     },
     handleClose(done) {
       // this.$confirm('确认关闭？')

@@ -17,6 +17,9 @@ npm run serve
 链接：https://pan.baidu.com/s/1-Fe9i8sENjFq74tatEyKyg   
 提取码：zl15  
 
+配置参考：  
+https://www.bilibili.com/video/BV1x64y1S7S7?p=8&vd_source=200e433095c5f4394cced5ce189b44c5  
+### 步骤
 1. 安装 phpStudy， 导入准备好的 sql 文件  
 2. cd 准备好的文件夹`vue_api_server`，终端中输入命令安装项目依赖包：`npm install`  
 3. 运行 powershell/cmd，输入`node ./app.js`指令，运行数据库，此时方可登录  
