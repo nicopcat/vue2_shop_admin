@@ -21,7 +21,7 @@
           <el-button
             class="user_manage_btn"
             type="primary"
-            @click="dialogVisible = true"
+            @click="AddUserDialogVisible = true"
             >添加用户</el-button
           >
         </el-col>
@@ -50,14 +50,18 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="180">
-                <template>
+                <template v-slot="scope">
+                  <!-- 修改按钮  -->
                   <el-button
+                    @click="showEditDialog(scope.row)"
                     type="primary"
                     size="mini"
                     icon="el-icon-edit"
                   ></el-button>
+                  <!-- 删除按钮 -->
                   <el-button
                     type="primary"
+                    @click="deleteUser(scope.row)"
                     size="mini"
                     icon="el-icon-delete"
                   ></el-button>
@@ -88,12 +92,12 @@
               :total="this.total"
             >
             </el-pagination>
+            <!-- 添加用户dialog -->
             <el-dialog
-              @close="addDialogClose"
               title="添加用户"
-              :visible.sync="dialogVisible"
+              :visible.sync="AddUserDialogVisible"
               width="30%"
-              :before-close="handleClose"
+              @close="resetForm('addFormRef')"
             >
               <el-form
                 :model="addForm"
@@ -118,10 +122,41 @@
                 </el-form-item>
               </el-form>
               <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addUser" :disabled="isValid"
-                  >确 定</el-button
+                <el-button @click="AddUserDialogVisible = false"
+                  >取 消</el-button
                 >
+                <el-button type="primary" @click="addUser">确 定</el-button>
+              </span>
+            </el-dialog>
+
+            <!-- 修改信息dialog  -->
+            <el-dialog
+              title="修改用户信息"
+              :visible.sync="EditUserDialogVisible"
+              width="30%"
+              @close="resetForm('editFormRef')"
+            >
+              <el-form
+                :model="editForm"
+                :rules="addFormRules"
+                ref="editFormRef"
+                label-width="70px"
+              >
+                <el-form-item label="用户名" prop="username">
+                  <el-input v-model="editForm.username" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                  <el-input type="email" v-model="editForm.email"></el-input>
+                </el-form-item>
+                <el-form-item label="手机" prop="mobile">
+                  <el-input type="mobile" v-model="editForm.mobile"></el-input>
+                </el-form-item>
+              </el-form>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="EditUserDialogVisible = false"
+                  >取 消</el-button
+                >
+                <el-button type="primary" @click="editUser">确 定</el-button>
               </span>
             </el-dialog>
           </div>
@@ -164,7 +199,8 @@ export default {
     }
 
     return {
-      isValid: false,
+      // add数据
+      AddUserDialogVisible: false,
       addForm: {
         username: '',
         password: '',
@@ -173,11 +209,15 @@ export default {
       },
       addFormRules: {
         username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          {
+            required: true,
+            message: '请输入符合规则的用户名',
+            trigger: 'blur'
+          },
+          { min: 5, max: 14, message: '长度在 5 到 14 个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
+          { required: true, message: '请输入符合规则的密码', trigger: 'blur' },
           { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
         ],
         email: [
@@ -197,8 +237,15 @@ export default {
           }
         ]
       },
-
-      dialogVisible: false,
+      // edit数据
+      EditUserDialogVisible: false,
+      editForm: {
+        id: '',
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      },
       // 获取用户列表的参数对象
       queryInfo: {
         query: '',
@@ -210,35 +257,96 @@ export default {
     }
   },
   methods: {
-    addDialogClose() {
-      this.$refs.addFormRef.resetFields()
+    // 打开修改用户信息
+    showEditDialog(r) {
+      this.EditUserDialogVisible = true
+      console.log('edit dialog open')
+      console.log(r)
+      this.editForm.id = r.id
+      this.editForm.username = r.username
+      this.editForm.email = r.email
+      this.editForm.mobile = r.mobile
     },
+    // 修改用户信息
+    editUser() {
+      this.$refs.editFormRef.validate(async (valid) => {
+        if (!valid) {
+          this.$message.error('信息错误，提交失败')
+          return false
+        }
+        const { data: res } = await this.$http.put(
+          'users/' + this.editForm.id,
+          this.editForm
+        )
+        console.log(res)
+        if (res.meta.status !== 200 || res.meta.status === 500) {
+          this.$message.error(`修改失败！错误代码 ${res.meta.status}`)
+        } else {
+          this.$message.success('修改成功')
+          this.EditUserDialogVisible = false
+          this.getUserList()
+        }
+      })
+    },
+    // editDialogClose() {
+    //   this.resetForm('editFormRef')
+    // },
+    // 添加新用户
     addUser() {
       this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) {
           this.$message.error('信息错误，提交失败')
           return false
         }
-        this.isValid = true
-        const res = await this.$http.post('users', this.addForm)
+        const { data: res } = await this.$http.post('users', this.addForm)
         console.log(res)
-        if (res.status !== 200) {
-          return this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
+        if (res.meta.status !== 201) {
+          this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
         } else {
           this.$message.success('提交成功')
+          this.AddUserDialogVisible = false
+          this.getUserList()
         }
       })
     },
-    resetForm() {
-      this.$refs.addFormRef.resetFields()
+    // addDialogClose() {
+    //   this.resetForm('addFormRef')
+    // },
+    deleteUser(r) {
+      console.log(r.id)
+      // 再确认是否删除
+      this.$confirm('确认删除用户数据？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          const { data: res } = await this.$http.delete('users/' + r.id, r.id)
+          console.log(res)
+          if (res.meta.status !== 200) {
+            this.$message.error(
+              `删除失败！错误代码 ${res.meta.status}，${res.meta.msg}`
+            )
+          } else {
+            this.$message.success('删除成功')
+            this.AddUserDialogVisible = false
+            this.getUserList()
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
-    handleClose(done) {
-      // this.$confirm('确认关闭？')
-      //   .then((_) => {
-      //     done()
-      //   })
-      //   .catch((_) => {})
+    // 重置功能
+    resetForm(formRef) {
+      console.log('test')
+      this.$refs[formRef].resetFields()
     },
+
+    // 获取和更改用户权限状态
     async userState(info) {
       console.log(info)
       // 查看文档 使用api接口保存最新状态
@@ -253,6 +361,20 @@ export default {
         return this.$message.error('用户状态更新失败')
       }
     },
+
+    // 获取用户列表
+    async getUserList() {
+      const res = await this.$http.get('users', {
+        params: this.queryInfo
+      })
+      console.log('UserList获取成功')
+      if (res.status === 200) {
+        this.userList = res.data.data.users
+        this.total = res.data.data.total
+      } else {
+        return this.$message.error('数据获取失败！')
+      }
+    },
     // pageSize 改变时会触发
     handleSizeChange(val) {
       // 改变每页展示的条数
@@ -265,20 +387,9 @@ export default {
       this.queryInfo.pagenum = val
       // 重新发起请求
       this.getUserList()
-    },
-    async getUserList() {
-      const res = await this.$http.get('users', {
-        params: this.queryInfo
-      })
-      console.log(res)
-      if (res.status === 200) {
-        this.userList = res.data.data.users
-        this.total = res.data.data.total
-      } else {
-        return this.$message.error('数据获取失败！')
-      }
     }
   },
+  // 组件创建时获取用户列表信息
   created() {
     this.getUserList()
   }

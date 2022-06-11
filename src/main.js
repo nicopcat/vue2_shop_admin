@@ -11,8 +11,15 @@ import './assets/css/global.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // import './plugins/element.js'
-// Element 为 Vue.prototype 添加了全局方法 $message。因此在 vue instance 中可以采用本页面中的方式调用 Message。
 // Vue.prototype.$message = Message
+
+// Ele-UI全局方法：$msgbox, $alert, $confirm 和 $prompt
+// $msgbox(options)
+// $alert(message, title, options) 或 $alert(message, options)
+// $confirm(message, title, options) 或 $confirm(message, options)
+// $prompt(message, title, options) 或 $prompt(message, options)
+// Element 为 Vue.prototype 添加了全局方法 $message。因此在 vue instance 中可以采用本页面中的方式调用 Message。
+
 
 
 // 配置请求根路径
@@ -25,6 +32,7 @@ axios.interceptors.request.use(config => {
 })
 
 Vue.prototype.$http = axios
+
 Vue.config.productionTip = false
 
 
