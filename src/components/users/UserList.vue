@@ -31,7 +31,8 @@
         <el-col>
           <div class="text item">
             <el-table :data="userList" border stripe style="width: 100%">
-              <el-table-column type="index" label="#"> </el-table-column>
+              <el-table-column type="index" label="#" width="180">
+              </el-table-column>
               <el-table-column prop="username" label="姓名"> </el-table-column>
               <el-table-column prop="mobile" label="电话" width="180">
               </el-table-column>
@@ -49,7 +50,7 @@
                   </el-switch>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="180">
+              <el-table-column label="操作">
                 <template v-slot="scope">
                   <!-- 修改按钮  -->
                   <el-button
@@ -60,7 +61,7 @@
                   ></el-button>
                   <!-- 删除按钮 -->
                   <el-button
-                    type="primary"
+                    type="danger"
                     @click="deleteUser(scope.row)"
                     size="mini"
                     icon="el-icon-delete"
@@ -73,7 +74,7 @@
                     :enterable="false"
                   >
                     <el-button
-                      type="primary"
+                      type="warning"
                       size="mini"
                       icon="el-icon-setting"
                     >
@@ -169,7 +170,7 @@
 <script>
 export default {
   data() {
-    var checkEmail = (rule, value, callback) => {
+    const checkEmail = (rule, value, callback) => {
       const regEmail =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       if (!value) {
@@ -184,7 +185,7 @@ export default {
       }, 1000)
     }
 
-    var checkMobile = (rule, value, callback) => {
+    const checkMobile = (rule, value, callback) => {
       const regMobile = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/
       if (!value) {
         return callback(new Error('手机号不能为空'))
@@ -260,8 +261,6 @@ export default {
     // 打开修改用户信息
     showEditDialog(r) {
       this.EditUserDialogVisible = true
-      console.log('edit dialog open')
-      console.log(r)
       this.editForm.id = r.id
       this.editForm.username = r.username
       this.editForm.email = r.email
