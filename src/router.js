@@ -21,10 +21,17 @@ const routes = [
         component: () => import('./components/users/UserList')
       },
       {
+        path: '/rights',
+        meta: { name: '权限列表' },
+        component: () => import('./components/auth/AuthRights')
+      },
+      {
         path: '/roles',
         meta: { name: '权限角色' },
-        component: () => import('./components/admin/AdminRoles')
+        component: () => import('./components/auth/AuthRoles')
       }
+
+
     ]
   }
 ]

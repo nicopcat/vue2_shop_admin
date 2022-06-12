@@ -1,11 +1,8 @@
 <template>
   <el-breadcrumb separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item
-      v-for="(p, i) in list"
-      :to="p.path"
-      :key="i"
-      >{{ p.meta.name }}</el-breadcrumb-item
-    >
+    <el-breadcrumb-item v-for="(p, i) in routeToFrom" :to="p.path" :key="i">{{
+      p.meta.name
+    }}</el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 
@@ -18,12 +15,11 @@ export default {
   },
   watch: {
     $route(to) {
-      this.list = to.matched
-      console.log(this.$route.matched)
+      this.routeToFrom = to.matched
     }
   },
   created() {
-    this.list = this.$route.matched
+    this.routeToFrom = this.$route.matched
   }
 }
 </script>
