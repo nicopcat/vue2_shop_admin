@@ -31,15 +31,12 @@
         <el-col>
           <div class="text item">
             <el-table :data="userList" border stripe style="width: 100%">
-              <el-table-column type="index" label="#" width="180">
+              <el-table-column type="index" label="#" width="60">
               </el-table-column>
               <el-table-column prop="username" label="姓名"> </el-table-column>
-              <el-table-column prop="mobile" label="电话" width="180">
-              </el-table-column>
-              <el-table-column prop="email" label="邮箱" width="180">
-              </el-table-column>
-              <el-table-column prop="role_name" label="角色" width="180">
-              </el-table-column>
+              <el-table-column prop="mobile" label="电话"> </el-table-column>
+              <el-table-column prop="email" label="邮箱"> </el-table-column>
+              <el-table-column prop="role_name" label="角色"> </el-table-column>
               <el-table-column label="权限状态">
                 <template v-slot="scope">
                   <el-switch
@@ -74,6 +71,7 @@
                     :enterable="false"
                   >
                     <el-button
+                      @click="setRole(scope.row)"
                       type="warning"
                       size="mini"
                       icon="el-icon-setting"
@@ -158,6 +156,37 @@
                   >取 消</el-button
                 >
                 <el-button type="primary" @click="editUser">确 定</el-button>
+              </span>
+            </el-dialog>
+
+            <el-dialog
+              title="分配角色"
+              :visible.sync="setRoleDialogVisible"
+              width="50%"
+              @close="closeSetRoleDialog"
+            >
+              <div>
+                <p>当前用户名：{{ userInfo.username }}</p>
+                <p>当前角色： {{ userInfo.role_name }}</p>
+                <p>
+                  <el-select v-model="selectedRoleId" placeholder="请选择">
+                    <el-option
+                      v-for="item in roleList"
+                      :key="item.id"
+                      :label="item.roleName"
+                      :value="item.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </p>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="setRoleDialogVisible = false"
+                  >取 消</el-button
+                >
+                <el-button type="primary" @click="saveRoleInfo"
+                  >确 定</el-button
+                >
               </span>
             </el-dialog>
           </div>
@@ -253,11 +282,47 @@ export default {
         pagenum: 1,
         pagesize: 5
       },
+      setRoleDialogVisible: false,
       userList: [],
-      total: 0
+      total: 0,
+      userInfo: {},
+      roleList: [],
+      selectedRoleId: ''
     }
   },
   methods: {
+    // 展示分配角色对话框
+    async setRole(row) {
+      this.userInfo = row
+      // 查询文档 角色列表 这一项
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200 || res.meta.status === 500) {
+        this.$message.error(`修改失败！错误代码 ${res.meta.status}`)
+      }
+      this.roleList = res.data
+      console.log(this.roleList)
+      this.setRoleDialogVisible = true
+    },
+    // 点击按钮 分配橘色
+    async saveRoleInfo() {
+      if (!this.selectedRoleId) {
+        return this.$message.error('请选一个新的角色')
+      }
+      const { data: res } = await this.$http.put(
+        `users/${this.userInfo.id}/role`,
+        { rid: this.selectedRoleId }
+      )
+      if (res.meta.status !== 200) {
+        this.$message.error('角色分配失败')
+      }
+      this.$message.success('角色分配成功')
+      this.getUserList()
+      this.setRoleDialogVisible = false
+    },
+    // 监听分配橘色对话框的关闭事件
+    closeSetRoleDialog() {
+      this.selectedRoleId = ''
+    },
     // 打开修改用户信息
     showEditDialog(r) {
       this.EditUserDialogVisible = true
@@ -287,9 +352,7 @@ export default {
         }
       })
     },
-    // editDialogClose() {
-    //   this.resetForm('editFormRef')
-    // },
+
     // 添加新用户
     addUser() {
       this.$refs.addFormRef.validate(async (valid) => {
@@ -312,7 +375,6 @@ export default {
     //   this.resetForm('addFormRef')
     // },
     deleteUser(r) {
-      console.log(r.id)
       // 再确认是否删除
       this.$confirm('确认删除用户数据？', '提示', {
         confirmButtonText: '确定',
@@ -366,7 +428,6 @@ export default {
       const res = await this.$http.get('users', {
         params: this.queryInfo
       })
-      console.log('UserList获取成功')
       if (res.status === 200) {
         this.userList = res.data.data.users
         this.total = res.data.data.total
