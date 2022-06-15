@@ -91,7 +91,7 @@
               :total="this.total"
             >
             </el-pagination>
-            <!-- 添加用户dialog -->
+            <!-- 添加用户 dialog -->
             <el-dialog
               title="添加用户"
               :visible.sync="AddUserDialogVisible"
@@ -128,7 +128,7 @@
               </span>
             </el-dialog>
 
-            <!-- 修改信息dialog  -->
+            <!-- 修改信息 dialog  -->
             <el-dialog
               title="修改用户信息"
               :visible.sync="EditUserDialogVisible"
@@ -158,7 +158,7 @@
                 <el-button type="primary" @click="editUser">确 定</el-button>
               </span>
             </el-dialog>
-
+            <!-- 分配角色 dialog  -->
             <el-dialog
               title="分配角色"
               :visible.sync="setRoleDialogVisible"

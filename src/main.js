@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 
+import ZkTable from 'vue-table-with-tree-grid'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import './assets/css/global.css'
@@ -37,6 +38,7 @@ Vue.config.productionTip = false
 
 
 Vue.use(ElementUI)
+Vue.component('zk-table', ZkTable)
 
 new Vue({
   router,

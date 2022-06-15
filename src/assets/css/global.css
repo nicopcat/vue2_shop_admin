@@ -1,8 +1,8 @@
 html,
 body,
 #app {
-    height: 100%;
-    min-width: 1460px;
+    height: 100vh;
+    /* min-width: 1460px; */
     margin: 0;
     padding: 0;
 }
@@ -13,7 +13,9 @@ body,
 }
 
 .el-table,
-.el-pagination {
+.el-pagination,
+.zk-table {
+    text-align: center;
     margin-top: 15px;
     font-size: 12px;
 }

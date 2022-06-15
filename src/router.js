@@ -29,6 +29,11 @@ const routes = [
         path: '/roles',
         meta: { name: '权限角色' },
         component: () => import('./components/auth/AuthRoles')
+      },
+      {
+        path: '/categories',
+        meta: { name: '商品分类' },
+        component: () => import('./components/goods/GoodsCate')
       }
 
 

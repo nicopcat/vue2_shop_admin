@@ -16,6 +16,7 @@ export default {
   watch: {
     $route(to) {
       this.routeToFrom = to.matched
+      console.log(to.matched)
     }
   },
   created() {
