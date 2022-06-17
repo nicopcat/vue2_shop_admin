@@ -70,7 +70,7 @@ export default {
         if (!valid) return
         // 直接用花括号解构赋值出得到的data
         const { data: res } = await this.$http.post('login', this.loginForm)
-        console.log(res)
+        // console.log(res)
         if (res.meta.status !== 200) {
           return this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
         } else {

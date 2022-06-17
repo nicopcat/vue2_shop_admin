@@ -241,8 +241,7 @@ export default {
           'categories/' + this.editCateForm.cat_id,
           { cat_name: this.editCateForm.cat_name }
         )
-        console.log(res)
-        console.log(this.editCateForm.cat_name)
+
         if (res.meta.status !== 200) {
           this.$message.error(`分类名修改失败！错误代码 ${res.meta.status}`)
         }
@@ -265,7 +264,7 @@ export default {
       })
         .then(async () => {
           const { data: res } = await this.$http.delete('categories/' + id)
-          console.log(res)
+          // console.log(res)
           if (res.meta.status !== 200) {
             this.$message.error(
               `删除失败！错误代码 ${res.meta.status}，${res.meta.msg}`
@@ -293,7 +292,7 @@ export default {
       this.selectedCateIds = []
     },
     selectedCateChange() {
-      console.log(this.addCateForm)
+      // console.log(this.addCateForm)
       if (this.selectedCateIds.length > 0) {
         this.addCateForm.cat_pid =
           this.selectedCateIds[this.selectedCateIds.length - 1]

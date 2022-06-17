@@ -4,3 +4,4 @@
 <script>
 export default {}
 </script>
+console

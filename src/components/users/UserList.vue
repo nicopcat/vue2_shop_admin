@@ -300,7 +300,7 @@ export default {
         this.$message.error(`修改失败！错误代码 ${res.meta.status}`)
       }
       this.roleList = res.data
-      console.log(this.roleList)
+      // console.log(this.roleList)
       this.setRoleDialogVisible = true
     },
     // 点击按钮 分配橘色
@@ -342,7 +342,7 @@ export default {
           'users/' + this.editForm.id,
           this.editForm
         )
-        console.log(res)
+        // console.log(res)
         if (res.meta.status !== 200 || res.meta.status === 500) {
           this.$message.error(`修改失败！错误代码 ${res.meta.status}`)
         } else {
@@ -361,7 +361,7 @@ export default {
           return false
         }
         const { data: res } = await this.$http.post('users', this.addForm)
-        console.log(res)
+        // console.log(res)
         if (res.meta.status !== 201) {
           this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
         } else {
@@ -383,7 +383,7 @@ export default {
       })
         .then(async () => {
           const { data: res } = await this.$http.delete('users/' + r.id, r.id)
-          console.log(res)
+          // console.log(res)
           if (res.meta.status !== 200) {
             this.$message.error(
               `删除失败！错误代码 ${res.meta.status}，${res.meta.msg}`
@@ -409,7 +409,7 @@ export default {
 
     // 获取和更改用户权限状态
     async userState(info) {
-      console.log(info)
+      // console.log(info)
       // 查看文档 使用api接口保存最新状态
       // - 请求路径：users/:uId/state/:type
       // - 请求方法：put

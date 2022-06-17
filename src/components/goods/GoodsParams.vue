@@ -290,7 +290,7 @@ export default {
       this.saveAttrVals(row)
     },
     delTag(row, i) {
-      console.log(row)
+      // console.log(row)
       row.attr_vals.splice(i, 1)
       this.saveAttrVals(row)
     },
@@ -348,7 +348,7 @@ export default {
             attr_sel: this.activeName
           }
         )
-        console.log(res)
+        // console.log(res)
         if (res.meta.status !== 200) {
           this.$message.error('修改商品分类参数失败')
         }
