@@ -30,7 +30,7 @@
             :expand-type="props.expandType"
             :selection-type="props.selectionType"
           >
-            <template slot="cat_deleted" scope="scope">
+            <template slot="cat_deleted" slot-scope="scope">
               <i
                 v-if="scope.row.cat_deleted === false"
                 class="el-icon-success iconTruthy"
@@ -38,7 +38,7 @@
               <i v-else class="el-icon-error iconFalsy"></i>
             </template>
 
-            <template slot="cat_level" scope="scope">
+            <template slot="cat_level" slot-scope="scope">
               <el-tag type="success" v-if="scope.row.cat_level === 0"
                 >一级</el-tag
               >
@@ -48,7 +48,7 @@
               <el-tag type="warning" v-else>三级</el-tag>
             </template>
 
-            <template slot="cat_actions" scope="scope">
+            <template slot="cat_actions" slot-scope="scope">
               <el-button
                 type="primary"
                 size="mini"
@@ -258,7 +258,7 @@ export default {
     // 删除分类
     delCate(id) {
       // 再确认是否删除
-      this.$confirm('确认删除此分类？', '提示', {
+      this.$confirm('确认删除此分类参数？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

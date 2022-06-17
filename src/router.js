@@ -34,9 +34,12 @@ const routes = [
         path: '/categories',
         meta: { name: '商品分类' },
         component: () => import('./components/goods/GoodsCate')
+      },
+      {
+        path: '/params',
+        meta: { name: '商品参数' },
+        component: () => import('./components/goods/GoodsParams')
       }
-
-
     ]
   }
 ]
