@@ -2,7 +2,7 @@
   <div>
     <el-card class="users_card" shadow="hover">
       <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="12">
           <el-input
             placeholder="请输入搜索内容"
             v-model="queryInfo.query"

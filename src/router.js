@@ -39,6 +39,18 @@ const routes = [
         path: '/params',
         meta: { name: '商品参数' },
         component: () => import('./components/goods/GoodsParams')
+      },
+      {
+        path: '/goods',
+        meta: { name: '商品列表' },
+        component: () => import('./components/goods/GoodsList'),
+        children: [
+          {
+            path: '/goods/add',
+            meta: { name: '添加商品' },
+            component: () => import('./components/goods/AddGoods')
+          }
+        ]
       }
     ]
   }

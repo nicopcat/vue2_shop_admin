@@ -5,6 +5,8 @@ import store from './store'
 import axios from 'axios'
 import 'default-passive-events'
 import ZkTable from 'vue-table-with-tree-grid'
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.snow.css'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import './assets/css/global.css'
@@ -33,12 +35,28 @@ axios.interceptors.request.use(config => {
 })
 
 Vue.prototype.$http = axios
-
 Vue.config.productionTip = false
 
 
 Vue.use(ElementUI)
+Vue.use(VueQuillEditor)
 Vue.component('zk-table', ZkTable)
+// Vue.use( /* { default global options } */)ss
+
+// 时间转换filter
+Vue.filter('dateFormat', dateVal => {
+  const dt = new Date(dateVal)
+
+  const y = dt.getFullYear()
+  const m = (dt.getMonth() + 1 + '').padStart(2, '0')
+  const d = (dt.getDate() + '').padStart(2, '0')
+
+  const hh = (dt.getHours() + '').padStart(2, '0')
+  const mm = (dt.getMinutes() + '').padStart(2, '0')
+  const ss = (dt.getSeconds() + '').padStart(2, '0')
+
+  return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+})
 
 new Vue({
   router,
