@@ -22,7 +22,7 @@
       <el-row>
         <el-col>
           <el-table :data="orderList" border stripe style="width: 100%">
-            <el-table-column type="index" label="#" width="60">
+            <el-table-column type="index" label="#" width="40">
             </el-table-column>
             <el-table-column prop="order_number" label="订单编号" width="220">
             </el-table-column>
@@ -43,7 +43,7 @@
                 {{ scope.row.create_time | dateFormat }}
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="120">
+            <el-table-column label="操作" width="160">
               <template v-slot="scope">
                 <!-- 修改地址按钮 -->
                 <el-button
@@ -220,6 +220,6 @@ export default {
 <style lang="less" scoped>
 .el-button {
   margin: 0 !important;
-  margin: 0 5px 0 0 !important;
+  margin: 0 5px 5px 0 !important;
 }
 </style>
