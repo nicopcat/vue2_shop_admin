@@ -56,6 +56,11 @@ const routes = [
         path: '/orders',
         meta: { name: '订单管理' },
         component: () => import('./components/order/OrderList')
+      },
+      {
+        path: '/reports',
+        meta: { name: '订单管理' },
+        component: () => import('./components/report/ReportPage')
       }
     ]
   }
