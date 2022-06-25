@@ -114,6 +114,7 @@
 // import AddGodds from './AddGoods.vue'
 export default {
   // componets:{AddGodds},
+
   data() {
     return {
       inputVal: '',
@@ -124,37 +125,6 @@ export default {
       },
       total: 0,
       goodsList: [],
-      // AddGoodsDialogVisible: false,
-      // addForm: {
-      //   goods_name: '',
-      //   goods_cat: [],
-      //   goods_price: '',
-      //   goods_number: '',
-      //   goods_weight: '',
-      //   goods_introduce: '',
-      //   pics: {},
-      //   attrs: []
-      // },
-      // addFormRules: {
-      //   goods_name: [
-      //     { required: true, message: '请输入商品名称', trigger: 'blur' }
-      //   ],
-      //   goods_cat: [
-      //     { required: true, message: '请输入商品名称', trigger: 'blur' }
-      //   ],
-      //   goods_price: [
-      //     { required: true, message: '请输入商品价格', trigger: 'blur' }
-      //   ],
-      //   goods_number: [
-      //     { required: true, message: '请输入商品数量', trigger: 'blur' }
-      //   ],
-      //   goods_weight: [
-      //     { required: true, message: '请输入商品重量', trigger: 'blur' }
-      //   ],
-      //   goods_introduce: [
-      //     { required: false, message: '请输入商品介绍', trigger: 'blur' }
-      //   ]
-      // },
       searchVal: '',
       editGoodsDialogVisible: false,
       editGoodsForm: {
@@ -278,10 +248,19 @@ export default {
   created() {
     this.getGoodsList()
   },
-  beforeUpdate() {
-    this.getGoodsList()
+  watch: {
+    $route: {
+      handler() {
+        // console.log(route)
+        this.getGoodsList()
+      },
+      immediate: true // 此项须设置为true
+    }
   }
 }
 </script>
 <style lang="less" scoped>
+.el-table__row .el-button {
+  margin: 0 5px 2px 0;
+}
 </style>

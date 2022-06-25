@@ -460,4 +460,8 @@ export default {
 .el-card {
   width: 100%;
 }
+
+.el-table__row .el-button {
+  margin: 0 5px 2px 0;
+}
 </style>

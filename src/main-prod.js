@@ -1,18 +1,19 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
 import axios from 'axios'
 import 'default-passive-events'
 import ZkTable from 'vue-table-with-tree-grid'
 import VueQuillEditor from 'vue-quill-editor'
-import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.snow.css'
+import NProgress from 'nprogress'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import './assets/css/global.css'
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
+
 // import './plugins/element.js'
 // Vue.prototype.$message = Message
 
@@ -27,9 +28,18 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 // 配置请求根路径
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+
+// 在request拦截器中展示进度条 调用NProgress.start()
 axios.interceptors.request.use(config => {
+  NProgress.start()
   config.headers.Authorization = sessionStorage.getItem('token')
 
+  // 最后必须return config
+  return config
+})
+// 在拦截器的response在他隐藏进度条 调用NProgress.done()
+axios.interceptors.response.use(config => {
+  NProgress.done()
   // 最后必须return config
   return config
 })
@@ -38,14 +48,13 @@ Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 
-Vue.use(ElementUI)
+// Vue.use(ElementUI)
 Vue.use(VueQuillEditor)
 Vue.component('zk-table', ZkTable)
-// Vue.use( /* { default global options } */)ss
 
 // 时间转换filter
 Vue.filter('dateFormat', dateVal => {
-  const dt = new Date(dateVal)
+  const dt = new Date(dateVal * 1000)
 
   const y = dt.getFullYear()
   const m = (dt.getMonth() + 1 + '').padStart(2, '0')
@@ -60,6 +69,5 @@ Vue.filter('dateFormat', dateVal => {
 
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')

@@ -237,6 +237,7 @@ export default {
           this.$router.push('/goods')
         }
       })
+      // this.$emit('callGetGoodList')
     },
     // 切换标签页
     handleClick() {

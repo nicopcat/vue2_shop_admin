@@ -22,9 +22,8 @@
       <el-row>
         <el-col>
           <el-table :data="orderList" border stripe style="width: 100%">
-            <el-table-column type="index" label="#" width="40">
-            </el-table-column>
-            <el-table-column prop="order_number" label="订单编号" width="220">
+            <el-table-column type="index" label="#"> </el-table-column>
+            <el-table-column prop="order_number" label="订单编号">
             </el-table-column>
             <el-table-column prop="order_price" label="订单价格" width="60">
             </el-table-column>
@@ -38,7 +37,7 @@
             </el-table-column>
             <el-table-column prop="is_send" label="是否发货" width="60">
             </el-table-column>
-            <el-table-column prop="create_time" label="下单时间">
+            <el-table-column prop="create_time" label="下单时间" width="200">
               <template v-slot="scope">
                 {{ scope.row.create_time | dateFormat }}
               </template>

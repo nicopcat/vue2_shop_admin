@@ -379,5 +379,9 @@ export default {
 .el-cascader {
   width: 100%;
 }
+
+.zk-table__cell-inner .el-button {
+  margin: 0 5px 2px 0;
+}
 </style>
 

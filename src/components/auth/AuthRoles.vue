@@ -10,7 +10,7 @@
         <el-col>
           <el-table :data="roleList" border stripe style="width: 100%">
             <!-- 展开列 -->
-            <el-table-column type="expand" width="60">
+            <el-table-column type="expand" width="80">
               <template v-slot="scope">
                 <el-row
                   :class="['bdbottom', i1 === 0 ? 'bdtop' : '', 'vcenter']"
@@ -70,7 +70,7 @@
                 </el-row>
               </template>
             </el-table-column>
-            <el-table-column type="index" label="#" width="60">
+            <el-table-column type="index" label="#" width="80">
             </el-table-column>
             <el-table-column prop="roleName" label="角色名称">
             </el-table-column>
@@ -79,13 +79,17 @@
             <el-table-column label="操作">
               <template v-slot="scope">
                 <!-- 编辑按钮  -->
-                <el-button type="primary" size="mini" icon="el-icon-edit"
-                  >编辑</el-button
-                >
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-edit"
+                ></el-button>
                 <!-- 删除按钮 -->
-                <el-button type="danger" size="mini" icon="el-icon-delete"
-                  >删除</el-button
-                >
+                <el-button
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
+                ></el-button>
                 <el-button
                   type="warning"
                   size="mini"
@@ -245,6 +249,9 @@ export default {
 .vcenter {
   display: flex;
   align-items: center;
+}
+.el-table__row .el-button {
+  margin: 0 5px 2px 0;
 }
 </style>
 
