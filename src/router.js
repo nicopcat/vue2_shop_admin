@@ -18,49 +18,49 @@ const routes = [
       {
         path: '/users',
         meta: { name: '用户列表' },
-        component: () => import('./components/users/UserList')
+        component: () => import('./views/users/UserList')
       },
       {
         path: '/rights',
         meta: { name: '权限列表' },
-        component: () => import('./components/auth/AuthRights')
+        component: () => import('./views/auth/AuthRights')
       },
       {
         path: '/roles',
         meta: { name: '权限角色' },
-        component: () => import('./components/auth/AuthRoles')
+        component: () => import('./views/auth/AuthRoles')
       },
       {
         path: '/categories',
         meta: { name: '商品分类' },
-        component: () => import('./components/goods/GoodsCate')
+        component: () => import('./views/goods/GoodsCate')
       },
       {
         path: '/params',
         meta: { name: '商品参数' },
-        component: () => import('./components/goods/GoodsParams')
+        component: () => import('./views/goods/GoodsParams')
       },
       {
         path: '/goods',
         meta: { name: '商品列表' },
-        component: () => import('./components/goods/GoodsList'),
+        component: () => import('./views/goods/GoodsList'),
         children: [
           {
             path: '/goods/add',
             meta: { name: '添加商品' },
-            component: () => import('./components/goods/AddGoods')
+            component: () => import('./views/goods/AddGoods')
           }
         ]
       },
       {
         path: '/orders',
         meta: { name: '订单管理' },
-        component: () => import('./components/order/OrderList')
+        component: () => import('./views/order/OrderList')
       },
       {
         path: '/reports',
         meta: { name: '订单管理' },
-        component: () => import('./components/report/ReportPage')
+        component: () => import('./views/report/ReportPage')
       }
     ]
   }

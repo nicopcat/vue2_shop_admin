@@ -6,14 +6,15 @@
           <el-input
             placeholder="请输入搜索的订单"
             v-model="queryInfo.query"
-            @keyup.enter.native="getOrderList"
+            @click="filterdOrders"
+            @keyup.enter.native="filterdOrders"
             clearable
-            @clear="getOrderList"
+            @clear="clearFilter"
           >
             <el-button
               slot="append"
               icon="el-icon-search"
-              @click="getOrderList"
+              @click="filterdOrders"
             ></el-button>
           </el-input>
         </el-col>
@@ -94,7 +95,6 @@
               v-model="addrForm.addr1"
               :options="cityData"
               :props="cascaderProps"
-              @change="handleChange"
             ></el-cascader>
           </el-form-item>
           <el-form-item label="详细地址" prop="addr2">
@@ -162,6 +162,25 @@ export default {
     }
   },
   methods: {
+    // 订单筛选
+    async filterdOrders() {
+      const { data: res } = await this.$http.get('orders', {
+        params: this.queryInfo
+      })
+      if (res.meta.status !== 200) {
+        return this.$message.error('数据获取失败！')
+      }
+      this.orderList = res.data.goods
+
+      this.orderList = res.data.goods.filter((item) => {
+        return item.order_number.match(this.queryInfo.query)
+      })
+      this.total = this.orderList.length
+    },
+    clearFilter() {
+      this.queryInfo.query = ''
+      this.getOrderList()
+    },
     // 物流进度
     showProgress() {
       this.progressVisible = true
@@ -176,7 +195,6 @@ export default {
         if (!valid) {
           return this.$message.error('请选择或填写详细地址')
         }
-        console.log(this.addrForm)
         this.addrDialogVisible = false
       })
     },
@@ -186,9 +204,6 @@ export default {
     showAddrDia() {
       this.addrDialogVisible = true
     },
-    handleChange() {
-      console.log(this.addrForm)
-    },
     async getOrderList() {
       const { data: res } = await this.$http.get('orders', {
         params: this.queryInfo
@@ -196,6 +211,7 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('数据获取失败！')
       }
+      console.log(res)
       this.orderList = res.data.goods
       this.total = res.data.total
     },
@@ -217,7 +233,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.el-button {
+.el-table-column .el-button {
   margin: 0 !important;
   margin: 0 5px 5px 0 !important;
 }

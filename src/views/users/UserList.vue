@@ -95,14 +95,14 @@
             <el-dialog
               title="添加用户"
               :visible.sync="AddUserDialogVisible"
-              width="30%"
+              width="40%"
               @close="resetForm('addFormRef')"
             >
               <el-form
                 :model="addForm"
                 :rules="addFormRules"
                 ref="addFormRef"
-                label-width="70px"
+                label-width="80px"
               >
                 <el-form-item label="用户名" prop="username">
                   <el-input v-model="addForm.username"></el-input>
@@ -129,17 +129,18 @@
             </el-dialog>
 
             <!-- 修改信息 dialog  -->
+
             <el-dialog
               title="修改用户信息"
               :visible.sync="EditUserDialogVisible"
-              width="30%"
+              width="40%"
               @close="resetForm('editFormRef')"
             >
               <el-form
                 :model="editForm"
                 :rules="addFormRules"
                 ref="editFormRef"
-                label-width="70px"
+                label-width="80px"
               >
                 <el-form-item label="用户名" prop="username">
                   <el-input v-model="editForm.username" disabled></el-input>
@@ -162,12 +163,19 @@
             <el-dialog
               title="分配角色"
               :visible.sync="setRoleDialogVisible"
-              width="50%"
+              width="40%"
               @close="closeSetRoleDialog"
             >
               <div>
-                <p>当前用户名：{{ userInfo.username }}</p>
-                <p>当前角色： {{ userInfo.role_name }}</p>
+                <p>
+                  <i class="el-icon-user-solid"></i> 当前用户名：{{
+                    userInfo.username
+                  }}
+                </p>
+                <p>
+                  <i class="el-icon-star-on"></i> 当前角色：
+                  {{ userInfo.role_name }}
+                </p>
                 <p>
                   <el-select v-model="selectedRoleId" placeholder="请选择">
                     <el-option
@@ -244,7 +252,7 @@ export default {
             message: '请输入符合规则的用户名',
             trigger: 'blur'
           },
-          { min: 5, max: 14, message: '长度在 5 到 14 个字符', trigger: 'blur' }
+          { min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入符合规则的密码', trigger: 'blur' },
@@ -297,7 +305,7 @@ export default {
       // 查询文档 角色列表 这一项
       const { data: res } = await this.$http.get('roles')
       if (res.meta.status !== 200 || res.meta.status === 500) {
-        this.$message.error(`修改失败！错误代码 ${res.meta.status}`)
+        this.$message.error('修改失败！')
       }
       this.roleList = res.data
       // console.log(this.roleList)
@@ -344,7 +352,7 @@ export default {
         )
         // console.log(res)
         if (res.meta.status !== 200 || res.meta.status === 500) {
-          this.$message.error(`修改失败！错误代码 ${res.meta.status}`)
+          this.$message.error(`修改失败！ ${res.meta.msg}`)
         } else {
           this.$message.success('修改成功')
           this.EditUserDialogVisible = false
@@ -363,7 +371,7 @@ export default {
         const { data: res } = await this.$http.post('users', this.addForm)
         // console.log(res)
         if (res.meta.status !== 201) {
-          this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
+          this.$message.error('添加失败！' + res.meta.msg)
         } else {
           this.$message.success('提交成功')
           this.AddUserDialogVisible = false
@@ -371,9 +379,9 @@ export default {
         }
       })
     },
-    // addDialogClose() {
-    //   this.resetForm('addFormRef')
-    // },
+    addDialogClose() {
+      this.$refs.addFormRef.resetForm()
+    },
     deleteUser(r) {
       // 再确认是否删除
       this.$confirm('确认删除用户数据？', '提示', {
@@ -385,9 +393,7 @@ export default {
           const { data: res } = await this.$http.delete('users/' + r.id, r.id)
           // console.log(res)
           if (res.meta.status !== 200) {
-            this.$message.error(
-              `删除失败！错误代码 ${res.meta.status}，${res.meta.msg}`
-            )
+            this.$message.error('删除失败！')
           } else {
             this.$message.success('删除成功')
             this.AddUserDialogVisible = false
@@ -403,7 +409,6 @@ export default {
     },
     // 重置功能
     resetForm(formRef) {
-      console.log('test')
       this.$refs[formRef].resetFields()
     },
 

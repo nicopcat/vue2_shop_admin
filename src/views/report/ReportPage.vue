@@ -50,11 +50,9 @@ export default {
       // 请求一下数据
       const { data: res } = await this.$http.get('reports/type/1')
       if (res.meta.status !== 200) {
-        console.log('error')
+        this.$message.error('获取报表错误！')
       }
-
       const option = mergeObj(this.options, res.data)
-      console.log(option)
 
       // 基于准备好的dom，初始化echarts实例
       const myChart = echarts.init(this.$refs.main)
@@ -68,7 +66,7 @@ export default {
 <style lang="less" scoped>
 .chart {
   display: flex;
-  max-width: 1000px;
-  height: 600px;
+  max-width: 900px;
+  height: 500px;
 }
 </style>

@@ -53,7 +53,7 @@
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
-                @click="showEditCateDialog(scope.row.cat_id)"
+                @click="showEditCateDialog(scope.row)"
                 >编辑</el-button
               >
               <el-button
@@ -84,7 +84,7 @@
     <el-dialog
       title="添加分类"
       :visible.sync="addCateDialogVisible"
-      width="50%"
+      width="40%"
       @close="addCateDialogClose"
     >
       <!-- 添加分类的表单 -->
@@ -94,7 +94,7 @@
         ref="addCateFormRef"
         label-width="80px"
       >
-        <el-form-item label="分类名称">
+        <el-form-item label="分类名称" prop="cat_name">
           <el-input v-model="addCateForm.cat_name"></el-input>
         </el-form-item>
         <el-form-item label="父级分类">
@@ -226,9 +226,10 @@ export default {
   },
   methods: {
     // 打开编辑 dialog
-    showEditCateDialog(id) {
+    showEditCateDialog(row) {
+      this.editCateForm.cat_id = row.cat_id
+      this.editCateForm.cat_name = row.cat_name
       this.editCateDialogVisible = true
-      this.editCateForm.cat_id = id
     },
     // 编辑分类
     editCate() {
@@ -241,7 +242,6 @@ export default {
           'categories/' + this.editCateForm.cat_id,
           { cat_name: this.editCateForm.cat_name }
         )
-
         if (res.meta.status !== 200) {
           this.$message.error(`分类名修改失败！错误代码 ${res.meta.status}`)
         }
@@ -264,7 +264,6 @@ export default {
       })
         .then(async () => {
           const { data: res } = await this.$http.delete('categories/' + id)
-          // console.log(res)
           if (res.meta.status !== 200) {
             this.$message.error(
               `删除失败！错误代码 ${res.meta.status}，${res.meta.msg}`
@@ -292,7 +291,6 @@ export default {
       this.selectedCateIds = []
     },
     selectedCateChange() {
-      // console.log(this.addCateForm)
       if (this.selectedCateIds.length > 0) {
         this.addCateForm.cat_pid =
           this.selectedCateIds[this.selectedCateIds.length - 1]
@@ -319,7 +317,9 @@ export default {
     // 添加新分类
     addCate() {
       this.$refs.addCateFormRef.validate(async (valid) => {
-        if (!valid) return
+        if (!valid) {
+          return this.$message.error('请输入相应内容')
+        }
         const { data: res } = await this.$http.post(
           'categories',
           this.addCateForm

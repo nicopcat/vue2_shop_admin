@@ -31,7 +31,7 @@ axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 // 在request拦截器中展示进度条 调用NProgress.start()
 axios.interceptors.request.use(config => {
   config.headers.Authorization = sessionStorage.getItem('token')
-
+  NProgress.start()
   // 最后必须return config
   return config
 })

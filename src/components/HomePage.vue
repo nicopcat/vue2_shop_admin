@@ -3,8 +3,10 @@
     <!-- 头部 -->
     <el-header>
       <div class="header_logo">
-        <img src="../assets/img/222.gif" alt="222" width="35" />
-        <span>咩商后台管理系统</span>
+        <router-link to="/home">
+          <img src="../assets/img/222.gif" alt="222" width="35" />
+          <span>咩商后台管理系统</span>
+        </router-link>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
@@ -12,19 +14,20 @@
     <!-- 主体区域 -->
     <el-container>
       <!-- 左侧侧边栏 -->
-      <el-aside :width="isCollapse ? '64px' : '200px'">
+      <el-aside :width="isCollapse ? '64px' : '180px'">
         <div class="toggle_button">
           <el-button @click="toggle_menu"><i class="el-icon-menu" /></el-button>
         </div>
 
         <!-- unique-opened表示只展开一个菜单默认false -->
+
         <el-menu
           :collapse-transition="false"
           :default-active="$route.path"
           router
           unique-opened
           :collapse="isCollapse"
-          background-color="#2f3541"
+          background-color="#212835"
           text-color="#fff"
           active-text-color="#e6a23c"
         >
@@ -57,11 +60,13 @@
           </template>
         </el-menu>
       </el-aside>
-      <!-- 右侧主体区 -->
 
+      <!-- 右侧主体区 -->
       <el-main>
         <TheBreadcrumbs />
-        <router-view></router-view>
+        <transition name="slide-fade" mode="out-in">
+          <router-view :key="$route.path"> </router-view>
+        </transition>
       </el-main>
     </el-container>
   </el-container>
@@ -111,11 +116,27 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.el-container {
+  height: 100%;
+}
 .el-header {
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #303639;
+  background-color: #24282a;
   color: #fff;
   text-align: center;
   line-height: 60px;
@@ -124,24 +145,29 @@ export default {
     img {
       transform: translate(-10%, 30%);
     }
+    a {
+      text-decoration: none;
+      color: #fff;
+    }
   }
 }
 
 .el-aside {
-  background-color: #2f3541;
+  height: 100%;
+  background-color: #212835;
   color: #fff;
   text-align: center;
   line-height: 200px;
-  max-width: 200px;
+  max-width: 220px;
+  width: 100%;
   overflow: hidden;
+  .el-menu .el-submenu .el-submenu__title {
+    padding: 0px 50px !important;
+  }
 }
 
 .el-main {
   background-color: #e9edf1;
-}
-
-.el-container {
-  height: 100%;
 }
 
 .toggle_button {
@@ -150,7 +176,7 @@ export default {
   .el-button {
     border: none;
     color: #fff;
-    background-color: #2f3541;
+    background-color: #212835;
   }
 }
 

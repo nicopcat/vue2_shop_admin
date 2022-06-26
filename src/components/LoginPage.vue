@@ -1,34 +1,41 @@
 <template>
   <div class="login_container">
-    <div class="login_box">
-      <div class="avatar_box">
-        <img src="../assets/logo.gif" alt="" />
-      </div>
-      <el-form
-        class="login_form"
-        ref="loginFormRef"
-        :model="loginForm"
-        :rules="loginFormRules"
-      >
-        <el-form-item label="用户名" prop="username">
-          <el-input
-            prefix-icon="el-icon-user-solid"
-            v-model="loginForm.username"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input
-            type="password"
-            prefix-icon="el-icon-lock"
-            v-model="loginForm.password"
-          ></el-input>
-        </el-form-item>
-        <el-form-item class="btns">
-          <el-button type="primary" @click="login">登录</el-button>
-          <el-button type="info" @click="resetLoginForm">重置</el-button>
-        </el-form-item>
-      </el-form>
+    <div class="avatar_box">
+      <img src="../assets/logo.gif" alt="" />
     </div>
+
+    <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules">
+      <el-form-item label="用户名" prop="username">
+        <el-input
+          prefix-icon="el-icon-user-solid"
+          v-model="loginForm.username"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input
+          type="password"
+          prefix-icon="el-icon-lock"
+          v-model="loginForm.password"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-row>
+          <el-col class="login">
+            <el-button type="primary" @click="login">登录</el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" class="tips">
+            <span>username: admin</span>
+            <span>password: 123456</span>
+          </el-col>
+          <el-col :span="12" class="reset">
+            <el-button type="info" @click="resetLoginForm">重置</el-button>
+          </el-col>
+        </el-row>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -38,8 +45,8 @@ export default {
     return {
       // 登录表单的数据对象
       loginForm: {
-        username: 'admin',
-        password: '123456'
+        username: '',
+        password: ''
       },
       // 表单验证规则
       loginFormRules: {
@@ -94,21 +101,23 @@ export default {
 
 <style lang="less" scoped>
 .login_container {
-  height: 100%;
-  display: grid;
-  place-items: center;
-  background-color: rgba(12, 39, 82, 0.91);
-}
+  min-height: 100%;
+  width: 100%;
+  background-color: #2d3a4b;
+  overflow: hidden;
 
-//   整一下Less语法嵌套！
-.login_box {
-  position: absolute;
-  width: 450px;
-  height: 300px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  border: 1px solid rgb(49, 78, 190);
+  .el-form {
+    position: relative;
+    width: 400px;
+    max-width: 100%;
+    padding: 160px 0;
+    margin: 0 auto;
+    overflow: hidden;
+    .el-form-item {
+      padding: 0 1rem;
+      line-height: 20px !important;
+    }
+  }
 
   .avatar_box {
     padding: 10px;
@@ -117,7 +126,7 @@ export default {
     border-radius: 50%;
     position: absolute;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 60%);
     background-color: #fff;
 
     img {
@@ -127,18 +136,29 @@ export default {
       border-radius: 50%;
     }
   }
-}
-.login_form {
-  position: absolute;
-  padding: 0 30px;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
 
-.btns {
-  display: flex;
-  justify-content: flex-end;
+  .login .el-button {
+    margin-top: 3rem;
+    width: 100%;
+  }
+  .reset {
+    margin-top: 2rem;
+
+    .el-button {
+      width: 50%;
+      float: right;
+    }
+  }
+
+  .tips {
+    margin-top: 2rem;
+    line-height: 20px;
+
+    span {
+      display: inline-block;
+      font-size: 12px;
+      color: rgba(180, 180, 180, 0.88);
+    }
+  }
 }
 </style>
