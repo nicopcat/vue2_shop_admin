@@ -53,18 +53,18 @@ export default {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
           {
-            min: 4,
-            max: 18,
-            message: '长度在 4 到 18 个字符',
+            min: 5,
+            max: 12,
+            message: '长度在 5 到 12 个字符',
             trigger: 'blur'
           }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           {
-            min: 2,
+            min: 6,
             max: 16,
-            message: '长度在 2 到 16 个字符',
+            message: '长度在 6 到 16 个字符',
             trigger: 'blur'
           }
         ]
@@ -77,19 +77,18 @@ export default {
         if (!valid) return
         // 直接用花括号解构赋值出得到的data
         const { data: res } = await this.$http.post('login', this.loginForm)
-        // console.log(res)
         if (res.meta.status !== 200) {
-          return this.$message.error(`登录失败！错误代码 ${res.meta.status}`)
-        } else {
-          this.$message.success('登录成功')
-          // 1. 将token储存到seesionStorage
-          sessionStorage.setItem('token', res.data.token)
-
-          // 2. 路由跳转到/home
-          setTimeout(() => {
-            this.$router.push('/home')
-          }, 1500)
+          this.$message.error(`登录失败！ ${res.meta.msg}`)
         }
+        console.log(res)
+        this.$message.success('登录成功')
+        // 1. 将token储存到seesionStorage
+        sessionStorage.setItem('token', res.data.token)
+
+        // 2. 路由跳转到/home
+        setTimeout(() => {
+          this.$router.push('/home')
+        }, 1500)
       })
     },
     resetLoginForm() {
@@ -106,19 +105,6 @@ export default {
   background-color: #2d3a4b;
   overflow: hidden;
 
-  .el-form {
-    position: relative;
-    width: 400px;
-    max-width: 100%;
-    padding: 160px 0;
-    margin: 0 auto;
-    overflow: hidden;
-    .el-form-item {
-      padding: 0 1rem;
-      line-height: 20px !important;
-    }
-  }
-
   .avatar_box {
     padding: 10px;
     width: 100px;
@@ -134,6 +120,19 @@ export default {
       height: 100%;
       background-color: rgb(238, 238, 238);
       border-radius: 50%;
+    }
+  }
+
+  .el-form {
+    position: relative;
+    width: 450px;
+    max-width: 100%;
+    padding: 180px 0;
+    margin: 0 auto;
+    overflow: hidden;
+    .el-form-item {
+      padding: 0 1.5rem;
+      margin-bottom: 0;
     }
   }
 
