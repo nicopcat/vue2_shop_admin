@@ -58,11 +58,10 @@
           <p></p>
         </div>
       </div>
- 
       <h2>关于作者</h2>
       <p>Github：<a href="https://github.com/nicopcat">nekolas</a></p>
       <p>博客：<a href="https://blog.nekolas.cafe/">blog.nekolas.cafe</a></p>
-         <el-alert
+      <el-alert
         title="该项目仅为个人兴趣作品"
         type="warning"
         description="如有侵权，请及时告知"
