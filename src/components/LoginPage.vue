@@ -27,8 +27,8 @@
         </el-row>
         <el-row>
           <el-col :span="12" class="tips">
-            <span>username: admin</span>
-            <span>password: 123456</span>
+            <div>username: admin</div>
+            <div>password: 123456</div>
           </el-col>
           <el-col :span="12" class="reset">
             <el-button type="info" @click="resetLoginForm">重置</el-button>
@@ -78,9 +78,8 @@ export default {
         // 直接用花括号解构赋值出得到的data
         const { data: res } = await this.$http.post('login', this.loginForm)
         if (res.meta.status !== 200) {
-          this.$message.error(`登录失败！ ${res.meta.msg}`)
+          return this.$message.error(`登录失败！${res.meta.msg}`)
         }
-        console.log(res)
         this.$message.success('登录成功')
         // 1. 将token储存到seesionStorage
         sessionStorage.setItem('token', res.data.token)
@@ -88,7 +87,7 @@ export default {
         // 2. 路由跳转到/home
         setTimeout(() => {
           this.$router.push('/home')
-        }, 1500)
+        }, 500)
       })
     },
     resetLoginForm() {
@@ -153,8 +152,8 @@ export default {
     margin-top: 2rem;
     line-height: 20px;
 
-    span {
-      display: inline-block;
+    div {
+      // display: inline-block;
       font-size: 12px;
       color: rgba(180, 180, 180, 0.88);
     }

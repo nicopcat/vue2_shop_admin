@@ -305,10 +305,9 @@ export default {
       // 查询文档 角色列表 这一项
       const { data: res } = await this.$http.get('roles')
       if (res.meta.status !== 200 || res.meta.status === 500) {
-        this.$message.error('修改失败！')
+        this.$message.error('获取失败！')
       }
       this.roleList = res.data
-      // console.log(this.roleList)
       this.setRoleDialogVisible = true
     },
     // 点击按钮 分配橘色
@@ -323,7 +322,7 @@ export default {
       if (res.meta.status !== 200) {
         this.$message.error('角色分配失败')
       }
-      this.$message.success('角色分配成功')
+      // this.$message.success('角色分配成功')
       this.getUserList()
       this.setRoleDialogVisible = false
     },

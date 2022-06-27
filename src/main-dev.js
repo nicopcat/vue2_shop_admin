@@ -26,8 +26,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 
 // 配置请求根路径
-// axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
-axios.defaults.baseURL = 'https://lianghj.top:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+// axios.defaults.baseURL = 'https://lianghj.top:8888/api/private/v1/'
 
 // 在request拦截器中展示进度条 调用NProgress.start()
 axios.interceptors.request.use(config => {
